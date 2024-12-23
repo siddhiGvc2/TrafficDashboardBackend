@@ -1,6 +1,6 @@
 var express = require('express');
 require('dotenv').config();
-var db=require('./models/index');
+var db=require('./Models/index');
 var path = require('path');
 // var https = require('https');
 import kwikpayRouter from "./Routes/TrafficTesting/macAddress.js";

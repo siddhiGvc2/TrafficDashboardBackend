@@ -1,5 +1,5 @@
 
-const {MacMapping,Testing} =require("../../models")
+const {MacMapping,Testing} =require("../../Models")
 import { successResponse, errorResponse, uniqueId } from '../../helpers';
 var events = require('../../helpers/events')
 

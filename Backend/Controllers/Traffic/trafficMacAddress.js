@@ -1,6 +1,6 @@
+import { where } from "sequelize";
 
-
-const {MacMapping,TestMode,SerialPort} =require("../../Models")
+const {TrafficMacMapping,TestMode,SerialPort} =require("../../Models")
 import { successResponse, errorResponse, uniqueId } from '../../helpers';
 var events = require('../../helpers/events')
 
@@ -8,7 +8,7 @@ export const getAllMacAddress=async(req,res)=>{
     try{
     
        
-        const obj = await MacMapping.findAll();
+        const obj = await TrafficMacMapping.findAll();
          res.status(200).json({data:obj})
 
     }
@@ -66,10 +66,10 @@ export const getData=async(req,res)=>{
       // if (req.query.stock_status) replObj['stock_status'] = req.query.stock_status.split(',');
       // if (req.query.burn_status) replObj['burn_status'] = req.query.burn_status.split(',');
 
-    //   const obj=await MacMapping.findAll({where:{city:}})
+    //   const obj=await TrafficMacMapping.findAll({where:{city:}})
       const [obj, _metadata] = await sequelize.query(
         `
-        select * FROM MacMapping
+        select * FROM TrafficMacMapping
         ${replObjG.city ? 'whrere City in (:city)' : ''}
         `,
         { replacements: { city: replObjG.city } }
@@ -85,34 +85,14 @@ export const getData=async(req,res)=>{
   }
 
 
-export const saveINHoutput=async(req,res)=>{
-    try{
-        console.log(req.body);
-        const output=req.body.outPutValue;
-        events.pubsub.emit('sendINHOutput',output,req.body.socketNumber,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-        if(obj)
-            {
-                obj.INHoutput=output ? 1:0
-                await obj.save();
-            }
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
 
-}
 
 export const sendFota=async(req,res)=>{
     try{
         console.log(req.body);
         const output=req.body.outPutValue;
         events.pubsub.emit('sendFota',output,req.body.socketNumber,req.body.UserName,req.body.type) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -130,7 +110,7 @@ export const sendReset=async(req,res)=>{
         
       
         events.pubsub.emit('sendReset',req.body.socketNumber,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -143,49 +123,16 @@ export const sendReset=async(req,res)=>{
 
 }
 
-export const sendV=async(req,res)=>{
-    try{
-        
-      
-      
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-        events.pubsub.emit('sendV',req.body.socketNumber,req.body.Pin,req.body.Pulse,obj.SNoutput) ;
-       
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
 
-}
 
-export const sendTC=async(req,res)=>{
-    try{
-        
-      
-        events.pubsub.emit('sendTC',req.body.socketNumber,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-       
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
 
-}
 
 export const sendFW=async(req,res)=>{
     try{
         
       
         events.pubsub.emit('sendFW',req.body.socketNumber,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -198,30 +145,14 @@ export const sendFW=async(req,res)=>{
 
 
 }
-export const sendTV=async(req,res)=>{
-    try{
-        
-      
-        events.pubsub.emit('sendTV',req.body.socketNumber,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-       
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
 
-}
 
 export const sendFotaUrl=async(req,res)=>{
     try{
         
       
         events.pubsub.emit('sendFotaUrl',req.body.socketNumber,req.body.Url,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -239,7 +170,7 @@ export const askUrl=async(req,res)=>{
         
       
         events.pubsub.emit('askUrl',req.body.socketNumber,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -257,7 +188,7 @@ export const setSN=async(req,res)=>{
         
       
         events.pubsub.emit('setSN',req.body.socketNumber,req.body.UserName,req.body.SerialNumber) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -274,7 +205,7 @@ export const setErase=async(req,res)=>{
         
       
         events.pubsub.emit('setErase',req.body.socketNumber,req.body.UserName,req.body.Erase) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -287,29 +218,13 @@ export const setErase=async(req,res)=>{
 
 }
 
-export const setL=async(req,res)=>{
-    try{
-        
-      
-        events.pubsub.emit('setL',req.body.socketNumber,req.body.UserName,req.body.LNumber) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-       
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
 
-}
 export const checkErase=async(req,res)=>{
     try{
         
       
         events.pubsub.emit('checkErase',req.body.socketNumber) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -322,47 +237,14 @@ export const checkErase=async(req,res)=>{
 
 }
 
-export const setPair=async(req,res)=>{
-    try{
-        
-      
-        events.pubsub.emit('setPair',req.body.socketNumber,req.body.UserName,req.body.PairNumber) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-       
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
 
-}
-export const checkPair=async(req,res)=>{
-    try{
-        
-      
-        events.pubsub.emit('checkPair',req.body.socketNumber) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-       
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
-
-}
 
 export const checkSN=async(req,res)=>{
     try{
         
       
         events.pubsub.emit('checkSN',req.body.socketNumber) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -375,48 +257,16 @@ export const checkSN=async(req,res)=>{
 
 }
 
-export const sendCC=async(req,res)=>{
-    try{
-        
-      
-        events.pubsub.emit('sendCC',req.body.socketNumber,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-       
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
 
-}
 
-export const sendLight=async(req,res)=>{
-    try{
-        
-      
-        events.pubsub.emit('sendLight',req.body.socketNumber,req.body.light,req.body.position,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-       
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
 
-}
 
 export const sendHBT=async(req,res)=>{
     try{
         
       
         events.pubsub.emit('sendHBT',req.body.socketNumber,req.body.value,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -429,48 +279,14 @@ export const sendHBT=async(req,res)=>{
 
 }
 
-export const sendCA=async(req,res)=>{
-    try{
-        
-      
-        events.pubsub.emit('sendCA',req.body.socketNumber,req.body.numValue,req.body.polarity,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-       
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
 
-}
-
-export const askCA=async(req,res)=>{
-    try{
-        
-      
-        events.pubsub.emit('askCA',req.body.socketNumber,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-       
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
-
-}
 
 export const sendSIP=async(req,res)=>{
     try{
         
       
         events.pubsub.emit('sendSIP',req.body.socketNumber,req.body.Ip,req.body.Pin,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -487,7 +303,7 @@ export const askSIP=async(req,res)=>{
         
       
         events.pubsub.emit('askSIP',req.body.socketNumber) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -505,7 +321,7 @@ export const sendSSID=async(req,res)=>{
         
       
         events.pubsub.emit('sendSSID',req.body.socketNumber,req.body.SSID,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -522,7 +338,7 @@ export const askSSID=async(req,res)=>{
         
       
         events.pubsub.emit('askSSID',req.body.socketNumber) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -535,47 +351,14 @@ export const askSSID=async(req,res)=>{
 
 }
 
-export const sendPassThru=async(req,res)=>{
-    try{
-        
-      
-        events.pubsub.emit('sendPassThru',req.body.socketNumber,req.body.UserName,req.body.PassThru) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-       
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
 
-}
-export const checkPassThru=async(req,res)=>{
-    try{
-        
-      
-        events.pubsub.emit('checkPassThru',req.body.socketNumber) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
-       
-        res.status(200).json({data:obj})
-  
-    }
-    catch(err)
-    {
-        console.log(err);
-        res.status(505).json({status:505})
-    }
-
-}
 
 export const sendPWD=async(req,res)=>{
     try{
         
       
         events.pubsub.emit('sendPWD',req.body.socketNumber,req.body.PWD,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -593,7 +376,7 @@ export const sendSSID1=async(req,res)=>{
         
       
         events.pubsub.emit('sendSSID1',req.body.socketNumber,req.body.SSID1,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -611,7 +394,7 @@ export const sendPWD1=async(req,res)=>{
         
       
         events.pubsub.emit('sendPWD1',req.body.socketNumber,req.body.PWD1,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -629,7 +412,7 @@ export const modeTest1=async(req,res)=>{
         
       
         events.pubsub.emit('modeTest1',req.body.socketNumber,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -647,7 +430,7 @@ export const modeTest2=async(req,res)=>{
         
       
         events.pubsub.emit('modeTest2',req.body.socketNumber,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -665,7 +448,7 @@ export const modeTest3=async(req,res)=>{
         
       
         events.pubsub.emit('modeTest3',req.body.socketNumber,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -683,7 +466,7 @@ export const modeNone=async(req,res)=>{
         
       
         events.pubsub.emit('modeNone',req.body.socketNumber,req.body.UserName) ;
-        const obj = await MacMapping.findOne({where:{MacID:req.body.MacId}});
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
        
         res.status(200).json({data:obj})
   
@@ -747,3 +530,23 @@ export const getSerialPorts=async(req,res)=>{
     }
 
 }
+
+export const sendMessage=async(req,res)=>{
+    try{
+        console.log(req.body);
+    
+        events.pubsub.emit('sendMessage',req.body.socketNumber,req.body.message) ;
+        const obj = await TrafficMacMapping.findOne({where:{MacID:req.body.MacId}});
+       
+        res.status(200).json({data:obj})
+  
+    }
+    catch(err)
+    {
+        console.log(err);
+        res.status(505).json({status:505})
+    }
+
+}
+
+

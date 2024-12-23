@@ -1,6 +1,6 @@
 const { sequelize,batteryTransactions,batteries} =require('../../Models')
 // import { Transaction } from "sequelize";
-// import {batteryTransactions,sequi} from "../../models/batteryTransactions"
+// import {batteryTransactions,sequi} from "../../Models/batteryTransactions"
  const getAllTransaction=async(req,res)=>{
     try{
     
