@@ -56,7 +56,7 @@ const parseInternal = (payload, mqttClient,topic) => {
             {
 
 
-                reset_statusOfTrafficLights(parts,parts[0]);
+                reset_statusOfTrafficLights(parts,parts[2]);
                 // events.pubsub.emit('searchByDeviceId','search',parts[0],parts);
             }
             if(parts[1]=="DOOR")
