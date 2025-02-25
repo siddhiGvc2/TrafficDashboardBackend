@@ -45,36 +45,42 @@ const parseInternal = async(payload, mqttClient,topic) => {
         if(parts[0]=="TL")
           {
             console.log("TL command received");
-            const match1 = parts[3].match(/[RAG]/);
-            const match2 = parts[4].match(/[RAG]/);
-            const match3 = parts[5].match(/[RAG]/);
-            const match4 = parts[6].match(/[RAG]/);
+            // const match1 = parts[3].match(/[RAG]/);
+            // const match2 = parts[4].match(/[RAG]/);
+            // const match3 = parts[5].match(/[RAG]/);
+            // const match4 = parts[6].match(/[RAG]/);
+            const extractParts = (str) => str.match(/(\d*)([RA]?)/) || [null, null, null];
+
+            const match1 = extractParts(parts[3]);
+            const match2 = extractParts(parts[4]);
+            const match3 = extractParts(parts[5]);
+            const match4 = extractParts(parts[6]);
 
             const obj=await TrafficLightColors.findOne({where:{Junction:parts[1]}})
             if(obj)
             {
-                obj.R1= match1 ? match1[0] : null,
-                obj.R2=  match2 ? match2[0] : null,
-                obj.R3= match3 ? match3[0] : null,
-                obj.R4= match4 ? match4[0] : null,
-                obj.T1= match1 ? match1[1] : null,
-                obj.T2=  match2 ? match2[1] : null,
-                obj.T3= match3 ? match3[1] : null,
-                obj.T4= match4 ? match4[1] : null,
+                obj.R1= match1[2],
+                obj.R2= match2[2],
+                obj.R3= match3[2],
+                obj.R4= match4[2],
+                obj.T1= match1[1],
+                obj.T2= match2[1],
+                obj.T3= match3[1],
+                obj.T4= match4[1],
                 obj.lastHeartBeatTime=new Date().toISOString()
                 await obj.save();
             }
             else{
               await TrafficLightColors.create({
                 Junction:parts[1],
-                R1: match1 ? match1[0] : null,
-                R2:  match2 ? match2[0] : null,
-                R3: match3 ? match3[0] : null,
-                R4: match4 ? match4[0] : null,
-                T1:match1 ? match1[1] : null,
-                T2:  match2 ? match2[1] : null,
-                T3: match3 ? match3[1] : null,
-                T4: match4 ? match4[1] : null,
+                R1: match1[2],
+                R2: match2[2],
+                R3: match3[2],
+                R4: match4[2],
+                T1: match1[1],
+                T2: match2[1],
+                T3: match3[1],
+                T4: match4[1],
                 lastHeartBeatTime:new Date().toISOString()
               })
             }
