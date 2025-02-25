@@ -39,6 +39,25 @@ const parseInternal = async(payload, mqttClient,topic) => {
 
             queryforBattery({ lastOnTime: 'NOW()', lastHeartbeatTime: 'NOW()' }, parts[0]);
         }
+        if(parts[0]=="TL")
+          {
+            console.log("TL command received");
+            const match1 = parts[3].match(/[RAG]/);
+            const match2 = parts[4].match(/[RAG]/);
+            const match3 = parts[5].match(/[RAG]/);
+            const match4 = parts[6].match(/[RAG]/);
+              await TrafficLightColors.create({
+                Junction:parts[1],
+                R1: match1 ? match1[0] : null,
+                R2:  match2 ? match2[0] : null,
+                R3: match3 ? match3[0] : null,
+                R4: match4 ? match4[0] : null,
+                lastHeartBeatTime:new Date().toISOString()
+              })
+               
+              reset_statusOfTrafficLights(parts,parts[2]);
+              // events.pubsub.emit('searchByDeviceId','search',parts[0],parts);
+          }
 
         // 211023 added code for detecting machine packets ie *SSN,12345# sent to GVC/VM/#
         if (parts[0] == 'SSN'){
@@ -52,20 +71,7 @@ const parseInternal = async(payload, mqttClient,topic) => {
             return;
             }  
             // console.log(payload);
-            if(parts[0]=="TL")
-            {
-                await TrafficLightColors.create({
-                  Junction:parts[1],
-                  R1:parts[3],
-                  R2:parts[4],
-                  R3:parts[5],
-                  R4:parts[6],
-                  lastHeartBeatTime:new Date().toISOString()
-                })
-                 
-                reset_statusOfTrafficLights(parts,parts[2]);
-                // events.pubsub.emit('searchByDeviceId','search',parts[0],parts);
-            }
+          
             if(parts[1]=="DOOR")
             {
               reset_statusOfDoor(parts[2],parts[0]);
