@@ -49,6 +49,18 @@ const parseInternal = async(payload, mqttClient,topic) => {
             const match2 = parts[4].match(/[RAG]/);
             const match3 = parts[5].match(/[RAG]/);
             const match4 = parts[6].match(/[RAG]/);
+
+            const obj=await TrafficLightColors.findOne({where:{Junction:parts[1]}})
+            if(obj)
+            {
+                obj.R1= match1 ? match1[0] : null,
+                obj.R2=  match2 ? match2[0] : null,
+                obj.R3= match3 ? match3[0] : null,
+                obj.R4= match4 ? match4[0] : null,
+                obj.lastHeartBeatTime=new Date().toISOString()
+                await obj.save();
+            }
+            else{
               await TrafficLightColors.create({
                 Junction:parts[1],
                 R1: match1 ? match1[0] : null,
@@ -57,6 +69,9 @@ const parseInternal = async(payload, mqttClient,topic) => {
                 R4: match4 ? match4[0] : null,
                 lastHeartBeatTime:new Date().toISOString()
               })
+            }
+
+             
                
               reset_statusOfTrafficLights(parts,parts[2]);
               // events.pubsub.emit('searchByDeviceId','search',parts[0],parts);
