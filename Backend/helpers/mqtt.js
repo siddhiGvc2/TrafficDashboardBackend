@@ -1,5 +1,5 @@
 const { NOW } = require('sequelize');
-const { Master, CurrentStatus, sequelize,NumberPlates}=require('../Models')
+const { Master, CurrentStatus, sequelize,NumberPlates,TrafficLightColors}=require('../Models')
 var events = require('./events');
 //a
 const num = a => {
@@ -20,7 +20,7 @@ module.exports.parse = (payload, mqttClient,topic) => {
     })
 }
 
-const parseInternal = (payload, mqttClient,topic) => {
+const parseInternal = async(payload, mqttClient,topic) => {
     // 'Parsing message - ' + payload
     try {
         var cleaned = /^\**(.*?)\#*$/.exec(payload)[1];
@@ -52,10 +52,17 @@ const parseInternal = (payload, mqttClient,topic) => {
             return;
             }  
             // console.log(payload);
-            if(parts[1]=="TL")
+            if(parts[0]=="TL")
             {
-
-
+                await TrafficLightColors.create({
+                  Junction:parts[1],
+                  R1:parts[3],
+                  R2:parts[4],
+                  R3:parts[5],
+                  R4:parts[6],
+                  lastHeartBeatTime:new Date().toISOString()
+                })
+                 
                 reset_statusOfTrafficLights(parts,parts[2]);
                 // events.pubsub.emit('searchByDeviceId','search',parts[0],parts);
             }
