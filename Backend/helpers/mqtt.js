@@ -25,6 +25,7 @@ const parseInternal = async(payload, mqttClient,topic) => {
     try {
         var cleaned = /^\**(.*?)\#*$/.exec(payload)[1];
         var parts = cleaned.split(',');
+        console.log("Parts:",parts);
         // 211023 - ignore test with numeric number, allow commands in parts[0] 
         //if (!/^\d+$/.test(parts[0])) return;
         if(parts[1]=="BAT")
