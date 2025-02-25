@@ -57,6 +57,10 @@ const parseInternal = async(payload, mqttClient,topic) => {
                 obj.R2=  match2 ? match2[0] : null,
                 obj.R3= match3 ? match3[0] : null,
                 obj.R4= match4 ? match4[0] : null,
+                obj.T1= match1 ? match1[1] : null,
+                obj.T2=  match2 ? match2[1] : null,
+                obj.T3= match3 ? match3[1] : null,
+                obj.T4= match4 ? match4[1] : null,
                 obj.lastHeartBeatTime=new Date().toISOString()
                 await obj.save();
             }
@@ -67,6 +71,10 @@ const parseInternal = async(payload, mqttClient,topic) => {
                 R2:  match2 ? match2[0] : null,
                 R3: match3 ? match3[0] : null,
                 R4: match4 ? match4[0] : null,
+                T1:match1 ? match1[1] : null,
+                T2:  match2 ? match2[1] : null,
+                T3: match3 ? match3[1] : null,
+                T4: match4 ? match4[1] : null,
                 lastHeartBeatTime:new Date().toISOString()
               })
             }
