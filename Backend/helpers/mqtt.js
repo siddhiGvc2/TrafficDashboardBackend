@@ -49,7 +49,7 @@ const parseInternal = async(payload, mqttClient,topic) => {
             // const match2 = parts[4].match(/[RAG]/);
             // const match3 = parts[5].match(/[RAG]/);
             // const match4 = parts[6].match(/[RAG]/);
-            const extractParts = (str) => str.match(/(\d*)([RA]?)/) || [null, null, null];
+            const extractParts = (str) => str.match(/(\d*)([RAG]?)/) || [null, null, null];
 
             const match1 = extractParts(parts[3]);
             const match2 = extractParts(parts[4]);
