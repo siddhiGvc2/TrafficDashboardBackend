@@ -67,6 +67,7 @@ const parseInternal = async(payload, mqttClient,topic) => {
                 obj.T2= match2[1],
                 obj.T3= match3[1],
                 obj.T4= match4[1],
+                obj.Mode= parts[2],
                 obj.lastHeartBeatTime=new Date().toISOString()
                 await obj.save();
             }
@@ -81,6 +82,7 @@ const parseInternal = async(payload, mqttClient,topic) => {
                 T2: match2[1],
                 T3: match3[1],
                 T4: match4[1],
+                Mode: parts[2],
                 lastHeartBeatTime:new Date().toISOString()
               })
             }

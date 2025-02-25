@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     T2:DataTypes.STRING,
     T3:DataTypes.STRING,
     T4:DataTypes.STRING,
+    Mode:DataTypes.STRING,
 
    
   }, {
