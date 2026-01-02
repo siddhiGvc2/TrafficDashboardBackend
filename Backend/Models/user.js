@@ -16,31 +16,31 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      City: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      zone: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      ward: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      beat: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      // City: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      // },
+      // zone: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      // },
+      // ward: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      // },
+      // beat: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      // },
   
-      clientName: {
-        type: DataTypes.STRING,
+      // clientName: {
+      //   type: DataTypes.STRING,
       
-      },
-      superAdmin: {
-        type: DataTypes.STRING,
+      // },
+      // superAdmin: {
+      //   type: DataTypes.STRING,
       
-      },
+      // },
       isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
